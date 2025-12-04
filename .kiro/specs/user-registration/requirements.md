@@ -87,14 +87,4 @@ This document specifies the requirements for a user registration system that all
 4. THE Registration System SHALL include Event details (name, capacity, event ID) in the returned list
 5. THE Registration System SHALL return the list in a consistent order
 
-### Requirement 7
 
-**User Story:** As a system operator, I want the system to maintain data consistency, so that registration states are always accurate and reliable.
-
-#### Acceptance Criteria
-
-1. WHEN concurrent registration requests occur for the same Event, THE Registration System SHALL process them sequentially to prevent capacity violations
-2. WHEN a Registration is created or removed, THE Registration System SHALL update the Event capacity atomically
-3. WHEN a waitlist promotion occurs, THE Registration System SHALL ensure the User is removed from the waitlist and added to registrations atomically
-4. THE Registration System SHALL ensure that the number of Registrations for an Event never exceeds the Event capacity
-5. THE Registration System SHALL maintain referential integrity between Users, Events, and Registrations

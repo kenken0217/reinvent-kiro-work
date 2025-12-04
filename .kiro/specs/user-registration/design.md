@@ -279,25 +279,7 @@ User Unregister
 *For any* user, querying their registrations multiple times should return the events in the same consistent order.
 **Validates: Requirements 6.5**
 
-### Property 14: Capacity never exceeded (Critical Invariant)
-*For any* event at any point in time, the number of confirmed registrations should never exceed the event's capacity.
-**Validates: Requirements 7.4**
 
-### Property 15: Registration and capacity atomicity
-*For any* registration or unregistration operation, the registration count and available capacity should always be consistent (registrations + available = total capacity).
-**Validates: Requirements 7.2**
-
-### Property 16: Waitlist promotion atomicity
-*For any* waitlist promotion, a user should never appear in both the waitlist and registrations simultaneously.
-**Validates: Requirements 7.3**
-
-### Property 17: Referential integrity
-*For any* registration, both the referenced user and event should exist in the system.
-**Validates: Requirements 7.5**
-
-### Property 18: Concurrent registration safety
-*For any* set of concurrent registration requests for the same event, the system should process them such that capacity is never exceeded.
-**Validates: Requirements 7.1**
 
 ## Error Handling
 

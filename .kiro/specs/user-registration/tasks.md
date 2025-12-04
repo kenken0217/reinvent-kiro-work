@@ -47,7 +47,7 @@
   - Implement register_user method with capacity checking
   - Implement atomic registration creation with capacity decrement using DynamoDB transactions
   - Add conditional writes to prevent race conditions
-  - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 7.1, 7.2, 7.4_
+  - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
 - [ ]* 5.1 Write property test for registration capacity decrement
   - **Property 5: Registration decrements capacity**
@@ -56,14 +56,6 @@
 - [ ]* 5.2 Write property test for registration persistence
   - **Property 6: Registration persistence**
   - **Validates: Requirements 3.5**
-
-- [ ]* 5.3 Write property test for capacity invariant
-  - **Property 14: Capacity never exceeded (Critical Invariant)**
-  - **Validates: Requirements 7.4**
-
-- [ ]* 5.4 Write property test for registration atomicity
-  - **Property 15: Registration and capacity atomicity**
-  - **Validates: Requirements 7.2**
 
 - [ ] 6. Implement Waitlist functionality
   - Implement waitlist addition logic when event is at capacity
@@ -89,7 +81,7 @@
   - Add automatic waitlist promotion logic
   - Use DynamoDB transactions for atomic unregister + promote operations
   - Implement promote_from_waitlist helper method
-  - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 7.3_
+  - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
 - [ ]* 7.1 Write property test for unregistration capacity increment
   - **Property 10: Unregistration increments capacity**
@@ -98,10 +90,6 @@
 - [ ]* 7.2 Write property test for waitlist promotion
   - **Property 11: Waitlist promotion on unregistration**
   - **Validates: Requirements 5.2, 5.4**
-
-- [ ]* 7.3 Write property test for waitlist promotion atomicity
-  - **Property 16: Waitlist promotion atomicity**
-  - **Validates: Requirements 7.3**
 
 - [ ] 8. Implement Registration API endpoints
   - Add POST /registrations endpoint for user registration
@@ -119,26 +107,11 @@
   - **Property 13: Registration query ordering consistency**
   - **Validates: Requirements 6.5**
 
-- [ ]* 8.3 Write property test for referential integrity
-  - **Property 17: Referential integrity**
-  - **Validates: Requirements 7.5**
-
-- [ ] 9. Implement optimistic locking for concurrency control
-  - Add version field to Event model
-  - Implement version checking in registration operations
-  - Add retry logic with exponential backoff
-  - Handle concurrency conflicts gracefully
-  - _Requirements: 7.1, 7.2_
-
-- [ ]* 9.1 Write property test for concurrent registration safety
-  - **Property 18: Concurrent registration safety**
-  - **Validates: Requirements 7.1**
-
-- [ ] 10. Update CDK infrastructure
+- [ ] 9. Update CDK infrastructure
   - Update DynamoDB table definition to include GSI1 for event-to-registrations queries
   - Add necessary IAM permissions for new operations
   - Update Lambda environment variables if needed
   - _Requirements: All (infrastructure support)_
 
-- [ ] 11. Checkpoint - Ensure all tests pass
+- [ ] 10. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
