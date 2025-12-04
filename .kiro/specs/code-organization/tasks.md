@@ -13,7 +13,7 @@
   - Create `common/dependencies.py` for FastAPI dependency injection
   - _Requirements: 5.1, 5.2, 5.3_
 
-- [-] 3. Refactor Events domain
+- [x] 3. Refactor Events domain
   - Move event models from `models.py` to `domains/events/models.py`
   - Create `domains/events/repository.py` with EventRepository class
   - Create `domains/events/service.py` with EventService class
