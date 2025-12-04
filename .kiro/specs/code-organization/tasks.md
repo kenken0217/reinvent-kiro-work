@@ -1,6 +1,6 @@
 # Implementation Plan: Code Organization Refactoring
 
-- [-] 1. Create new folder structure
+- [x] 1. Create new folder structure
   - Create `backend/common/` directory with `__init__.py`
   - Create `backend/domains/` directory with `__init__.py`
   - Create domain subdirectories: `events/`, `users/`, `registrations/`
