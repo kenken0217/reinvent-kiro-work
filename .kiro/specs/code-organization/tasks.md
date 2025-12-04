@@ -20,7 +20,7 @@
   - Create `domains/events/router.py` with event API endpoints
   - _Requirements: 1.1, 2.1, 3.1, 3.2_
 
-- [ ] 4. Refactor Users domain
+- [-] 4. Refactor Users domain
   - Move user models from `models.py` to `domains/users/models.py`
   - Create `domains/users/repository.py` with UserRepository class
   - Create `domains/users/service.py` with UserService class
