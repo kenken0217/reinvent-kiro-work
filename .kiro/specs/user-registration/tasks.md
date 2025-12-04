@@ -1,6 +1,6 @@
 # Implementation Plan: User Registration System
 
-- [ ] 1. Extend database schema and models
+- [x] 1. Extend database schema and models
   - Update DynamoDB table design to support single-table pattern with composite keys
   - Add User, Registration, and WaitlistEntry Pydantic models
   - Update Event model to include waitlistEnabled and currentRegistrations fields
@@ -18,7 +18,7 @@
   - **Property 3: Entity IDs remain stable**
   - **Validates: Requirements 1.5, 2.5**
 
-- [ ] 2. Implement User management functionality
+- [x] 2. Implement User management functionality
   - Create UserService class with user creation and retrieval methods
   - Extend DynamoDBClient with user-related database operations
   - Implement user existence validation
@@ -28,21 +28,21 @@
   - **Property 4: Waitlist initialization**
   - **Validates: Requirements 2.2**
 
-- [ ] 3. Implement User API endpoints
+- [x] 3. Implement User API endpoints
   - Add POST /users endpoint for user creation
   - Add GET /users/{user_id} endpoint for user retrieval
   - Add GET /users/{user_id}/registrations endpoint for listing user's events
   - Implement error handling for duplicate users and validation errors
   - _Requirements: 1.1, 1.2, 1.3, 6.1, 6.2, 6.3_
 
-- [ ] 4. Extend Event functionality for registration support
+- [x] 4. Extend Event functionality for registration support
   - Update Event model to track currentRegistrations and availableCapacity
   - Add waitlistEnabled field to event creation
   - Implement capacity validation logic
   - Update existing event endpoints to return new fields
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
 
-- [ ] 5. Implement Registration service with capacity management
+- [x] 5. Implement Registration service with capacity management
   - Create RegistrationService class
   - Implement register_user method with capacity checking
   - Implement atomic registration creation with capacity decrement using DynamoDB transactions
@@ -57,7 +57,7 @@
   - **Property 6: Registration persistence**
   - **Validates: Requirements 3.5**
 
-- [ ] 6. Implement Waitlist functionality
+- [x] 6. Implement Waitlist functionality
   - Implement waitlist addition logic when event is at capacity
   - Add waitlist ordering based on timestamp
   - Implement waitlist query methods
@@ -76,7 +76,7 @@
   - **Property 9: Waitlist entry persistence**
   - **Validates: Requirements 4.5**
 
-- [ ] 7. Implement unregistration with waitlist promotion
+- [x] 7. Implement unregistration with waitlist promotion
   - Implement unregister_user method in RegistrationService
   - Add automatic waitlist promotion logic
   - Use DynamoDB transactions for atomic unregister + promote operations
@@ -91,7 +91,7 @@
   - **Property 11: Waitlist promotion on unregistration**
   - **Validates: Requirements 5.2, 5.4**
 
-- [ ] 8. Implement Registration API endpoints
+- [x] 8. Implement Registration API endpoints
   - Add POST /registrations endpoint for user registration
   - Add DELETE /registrations/{registration_id} endpoint for unregistration
   - Add GET /events/{event_id}/registrations endpoint
@@ -107,11 +107,11 @@
   - **Property 13: Registration query ordering consistency**
   - **Validates: Requirements 6.5**
 
-- [ ] 9. Update CDK infrastructure
+- [x] 9. Update CDK infrastructure
   - Update DynamoDB table definition to include GSI1 for event-to-registrations queries
   - Add necessary IAM permissions for new operations
   - Update Lambda environment variables if needed
   - _Requirements: All (infrastructure support)_
 
-- [ ] 10. Checkpoint - Ensure all tests pass
+- [x] 10. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.

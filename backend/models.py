@@ -1,6 +1,18 @@
 from pydantic import BaseModel, Field
 from typing import Optional
+from datetime import datetime
 
+# User Models
+class UserCreate(BaseModel):
+    userId: str = Field(..., min_length=1, max_length=100)
+    name: str = Field(..., min_length=1, max_length=200)
+
+class User(BaseModel):
+    userId: str
+    name: str
+    createdAt: str  # ISO 8601 timestamp
+
+# Event Models (Extended)
 class EventCreate(BaseModel):
     eventId: Optional[str] = None
     title: str = Field(..., min_length=1, max_length=200)
@@ -10,6 +22,8 @@ class EventCreate(BaseModel):
     capacity: int = Field(..., gt=0)
     organizer: str = Field(..., min_length=1)
     status: str = Field(..., pattern=r'^(active|inactive|cancelled|completed)$')
+    waitlistEnabled: bool = Field(default=False)
+    currentRegistrations: int = Field(default=0)
 
 class EventUpdate(BaseModel):
     title: Optional[str] = Field(None, min_length=1, max_length=200)
@@ -19,6 +33,8 @@ class EventUpdate(BaseModel):
     capacity: Optional[int] = Field(None, gt=0)
     organizer: Optional[str] = Field(None, min_length=1)
     status: Optional[str] = Field(None, pattern=r'^(active|inactive|cancelled|completed)$')
+    waitlistEnabled: Optional[bool] = None
+    currentRegistrations: Optional[int] = None
 
 class Event(BaseModel):
     eventId: str
@@ -29,3 +45,29 @@ class Event(BaseModel):
     capacity: int
     organizer: str
     status: str
+    waitlistEnabled: bool = False
+    currentRegistrations: int = 0
+    
+    @property
+    def availableCapacity(self) -> int:
+        return self.capacity - self.currentRegistrations
+
+# Registration Models
+class RegistrationCreate(BaseModel):
+    userId: str = Field(..., min_length=1)
+    eventId: str = Field(..., min_length=1)
+
+class Registration(BaseModel):
+    registrationId: str
+    userId: str
+    eventId: str
+    registeredAt: str  # ISO 8601 timestamp
+    status: str = "confirmed"
+
+# Waitlist Models
+class WaitlistEntry(BaseModel):
+    waitlistId: str
+    userId: str
+    eventId: str
+    addedAt: str  # ISO 8601 timestamp
+    position: int
