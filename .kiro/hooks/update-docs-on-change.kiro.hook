@@ -6,7 +6,7 @@
     "filePattern": "backend/**/*.py"
   },
   "action": {
-    "type": "sendMessage",
+    "type": "askAgent",
     "message": "A Python source file has been modified: {{filePath}}. Please review the changes and update the documentation in the backend/docs/ directory if necessary. Ensure that:\n\n1. All new functions, classes, and modules are documented\n2. API endpoint changes are reflected in the documentation\n3. Code examples are updated if the API has changed\n4. The documentation follows the existing format and style\n\nFocus on keeping the documentation accurate and up-to-date with the code changes."
   },
   "enabled": true
