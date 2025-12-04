@@ -27,14 +27,14 @@
   - Create `domains/users/router.py` with user API endpoints
   - _Requirements: 1.1, 2.1, 3.1, 3.2_
 
-- [-] 5. Refactor Registrations domain
+- [x] 5. Refactor Registrations domain
   - Move registration models from `models.py` to `domains/registrations/models.py`
   - Create `domains/registrations/repository.py` with RegistrationRepository class
   - Create `domains/registrations/service.py` with RegistrationService class
   - Create `domains/registrations/router.py` with registration API endpoints
   - _Requirements: 1.1, 2.1, 3.1, 3.2_
 
-- [ ] 6. Update main.py
+- [-] 6. Update main.py
   - Remove all route definitions from main.py
   - Import and register domain routers
   - Keep only FastAPI app initialization and middleware configuration
