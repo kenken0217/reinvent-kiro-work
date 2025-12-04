@@ -18,7 +18,7 @@ client = TestClient(app)
 class TestUserEndpoints:
     """Test user management endpoints"""
     
-    @patch('services.user_service.create_user')
+    @patch('domains.users.service.UserService.create_user')
     def test_create_user_success(self, mock_create):
         """Test successful user creation"""
         mock_create.return_value = {
@@ -37,10 +37,11 @@ class TestUserEndpoints:
         assert data['userId'] == 'user123'
         assert data['name'] == 'Test User'
     
-    @patch('services.user_service.create_user')
+    @patch('domains.users.service.UserService.create_user')
     def test_create_user_duplicate(self, mock_create):
         """Test creating duplicate user returns 409"""
-        mock_create.side_effect = Exception('User with ID user123 already exists')
+        from common.exceptions import ConflictError
+        mock_create.side_effect = ConflictError('User with ID user123 already exists')
         
         response = client.post('/users', json={
             'userId': 'user123',
@@ -49,7 +50,7 @@ class TestUserEndpoints:
         
         assert response.status_code == 409
     
-    @patch('services.user_service.get_user')
+    @patch('domains.users.service.UserService.get_user')
     def test_get_user_success(self, mock_get):
         """Test getting existing user"""
         mock_get.return_value = {
@@ -64,7 +65,7 @@ class TestUserEndpoints:
         data = response.json()
         assert data['userId'] == 'user123'
     
-    @patch('services.user_service.get_user')
+    @patch('domains.users.service.UserService.get_user')
     def test_get_user_not_found(self, mock_get):
         """Test getting non-existent user returns 404"""
         mock_get.return_value = None
@@ -77,7 +78,7 @@ class TestUserEndpoints:
 class TestRegistrationEndpoints:
     """Test registration endpoints"""
     
-    @patch('services.registration_service.register_user')
+    @patch('domains.registrations.service.RegistrationService.register_user')
     def test_register_user_success(self, mock_register):
         """Test successful registration"""
         mock_register.return_value = {
@@ -91,9 +92,8 @@ class TestRegistrationEndpoints:
             }
         }
         
-        response = client.post('/registrations', json={
-            'userId': 'user123',
-            'eventId': 'event123'
+        response = client.post('/events/event123/registrations', json={
+            'userId': 'user123'
         })
         
         assert response.status_code == 201
@@ -101,7 +101,7 @@ class TestRegistrationEndpoints:
         assert data['status'] == 'registered'
         assert 'registration' in data
     
-    @patch('services.registration_service.register_user')
+    @patch('domains.registrations.service.RegistrationService.register_user')
     def test_register_user_waitlist(self, mock_register):
         """Test registration when event is full (waitlist)"""
         mock_register.return_value = {
@@ -115,9 +115,8 @@ class TestRegistrationEndpoints:
             }
         }
         
-        response = client.post('/registrations', json={
-            'userId': 'user123',
-            'eventId': 'event123'
+        response = client.post('/events/event123/registrations', json={
+            'userId': 'user123'
         })
         
         assert response.status_code == 201
@@ -125,31 +124,31 @@ class TestRegistrationEndpoints:
         assert data['status'] == 'waitlisted'
         assert 'waitlistEntry' in data
     
-    @patch('services.registration_service.register_user')
+    @patch('domains.registrations.service.RegistrationService.register_user')
     def test_register_user_already_registered(self, mock_register):
         """Test registering when already registered returns 409"""
-        mock_register.side_effect = Exception('User user123 is already registered for event event123')
+        from common.exceptions import ConflictError
+        mock_register.side_effect = ConflictError('User user123 is already registered for event event123')
         
-        response = client.post('/registrations', json={
-            'userId': 'user123',
-            'eventId': 'event123'
+        response = client.post('/events/event123/registrations', json={
+            'userId': 'user123'
         })
         
         assert response.status_code == 409
     
-    @patch('services.registration_service.register_user')
+    @patch('domains.registrations.service.RegistrationService.register_user')
     def test_register_user_event_full(self, mock_register):
         """Test registering when event is full without waitlist returns 422"""
-        mock_register.side_effect = Exception('Event event123 is at full capacity and waitlist is not enabled')
+        from common.exceptions import CapacityError
+        mock_register.side_effect = CapacityError('Event event123 is at full capacity and waitlist is not enabled')
         
-        response = client.post('/registrations', json={
-            'userId': 'user123',
-            'eventId': 'event123'
+        response = client.post('/events/event123/registrations', json={
+            'userId': 'user123'
         })
         
         assert response.status_code == 422
     
-    @patch('services.registration_service.unregister_user')
+    @patch('domains.registrations.service.RegistrationService.unregister_user')
     def test_unregister_user_success(self, mock_unregister):
         """Test successful unregistration"""
         mock_unregister.return_value = {
@@ -157,13 +156,13 @@ class TestRegistrationEndpoints:
             'promoted': None
         }
         
-        response = client.delete('/registrations/user123/event123')
+        response = client.delete('/events/event123/registrations/user123')
         
         assert response.status_code == 200
         data = response.json()
         assert data['unregistered'] is True
     
-    @patch('services.registration_service.unregister_user')
+    @patch('domains.registrations.service.RegistrationService.unregister_user')
     def test_unregister_with_promotion(self, mock_unregister):
         """Test unregistration with waitlist promotion"""
         mock_unregister.return_value = {
@@ -177,23 +176,24 @@ class TestRegistrationEndpoints:
             }
         }
         
-        response = client.delete('/registrations/user123/event123')
+        response = client.delete('/events/event123/registrations/user123')
         
         assert response.status_code == 200
         data = response.json()
         assert data['unregistered'] is True
         assert 'promoted' in data
     
-    @patch('services.registration_service.unregister_user')
+    @patch('domains.registrations.service.RegistrationService.unregister_user')
     def test_unregister_not_registered(self, mock_unregister):
         """Test unregistering when not registered returns 404"""
-        mock_unregister.side_effect = Exception('User user123 is not registered for event event123')
+        from common.exceptions import NotFoundError
+        mock_unregister.side_effect = NotFoundError('User user123 is not registered for event event123')
         
-        response = client.delete('/registrations/user123/event123')
+        response = client.delete('/events/event123/registrations/user123')
         
         assert response.status_code == 404
     
-    @patch('services.registration_service.get_event_registrations')
+    @patch('domains.registrations.service.RegistrationService.get_event_registrations')
     def test_get_event_registrations(self, mock_get_regs):
         """Test getting event registrations"""
         mock_get_regs.return_value = [
@@ -213,7 +213,7 @@ class TestRegistrationEndpoints:
         assert len(data) == 1
         assert data[0]['userId'] == 'user123'
     
-    @patch('services.registration_service.get_event_waitlist')
+    @patch('domains.registrations.service.RegistrationService.get_event_waitlist')
     def test_get_event_waitlist(self, mock_get_waitlist):
         """Test getting event waitlist"""
         mock_get_waitlist.return_value = [
@@ -237,7 +237,7 @@ class TestRegistrationEndpoints:
 class TestUserRegistrationsEndpoint:
     """Test user registrations listing endpoint"""
     
-    @patch('services.registration_service.get_user_registrations')
+    @patch('domains.registrations.service.RegistrationService.get_user_registrations')
     def test_get_user_registrations(self, mock_get_regs):
         """Test getting user's registered events"""
         mock_get_regs.return_value = [
@@ -264,10 +264,11 @@ class TestUserRegistrationsEndpoint:
         assert len(data) == 1
         assert data[0]['eventId'] == 'event123'
     
-    @patch('services.registration_service.get_user_registrations')
+    @patch('domains.registrations.service.RegistrationService.get_user_registrations')
     def test_get_user_registrations_user_not_found(self, mock_get_regs):
         """Test getting registrations for non-existent user"""
-        mock_get_regs.side_effect = Exception('User nonexistent does not exist')
+        from common.exceptions import NotFoundError
+        mock_get_regs.side_effect = NotFoundError('User nonexistent does not exist')
         
         response = client.get('/users/nonexistent/registrations')
         
