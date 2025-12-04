@@ -5,6 +5,7 @@ from aws_cdk import (
     aws_apigateway as apigateway,
     RemovalPolicy,
     Duration,
+    CfnOutput,
 )
 from aws_cdk.aws_lambda_python_alpha import PythonFunction
 from constructs import Construct
@@ -25,7 +26,7 @@ class BackendStack(Stack):
             removal_policy=RemovalPolicy.DESTROY,
         )
         
-        # Lambda Function
+        # Lambda Function using PythonFunction
         backend_path = os.path.join(os.path.dirname(__file__), '../../backend')
         
         api_lambda = PythonFunction(
@@ -35,6 +36,7 @@ class BackendStack(Stack):
             index="main.py",
             handler="handler",
             timeout=Duration.seconds(30),
+            memory_size=512,
             environment={
                 "DYNAMODB_TABLE_NAME": events_table.table_name,
             }
@@ -56,7 +58,6 @@ class BackendStack(Stack):
         )
         
         # Output the API URL
-        from aws_cdk import CfnOutput
         CfnOutput(
             self, "APIEndpoint",
             value=api.url,
