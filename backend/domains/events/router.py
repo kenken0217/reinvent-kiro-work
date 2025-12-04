@@ -20,7 +20,7 @@ def get_event_service(db: DynamoDBClient = Depends(get_database)) -> EventServic
     return EventService(repository)
 
 
-@app.post("", response_model=Event, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=Event, status_code=status.HTTP_201_CREATED)
 def create_event(
     event: EventCreate,
     service: EventService = Depends(get_event_service)
