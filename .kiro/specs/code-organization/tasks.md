@@ -41,7 +41,7 @@
   - Set up dependency injection
   - _Requirements: 1.4, 4.1, 7.4_
 
-- [x] 7. Update imports and dependencies
+- [ ] 7. Update imports and dependencies
   - Update all imports to use new module structure
   - Ensure no circular dependencies exist
   - Verify dependency flow (API → Service → Repository)
