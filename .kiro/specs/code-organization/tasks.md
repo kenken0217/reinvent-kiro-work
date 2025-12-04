@@ -7,7 +7,7 @@
   - Add `__init__.py` to each domain directory
   - _Requirements: 3.1, 3.3, 3.4_
 
-- [ ] 2. Implement common module
+- [-] 2. Implement common module
   - Create `common/database.py` with DynamoDBClient class
   - Create `common/exceptions.py` with domain exception classes
   - Create `common/dependencies.py` for FastAPI dependency injection
