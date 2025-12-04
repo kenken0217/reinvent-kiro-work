@@ -7,13 +7,13 @@
   - Add `__init__.py` to each domain directory
   - _Requirements: 3.1, 3.3, 3.4_
 
-- [-] 2. Implement common module
+- [x] 2. Implement common module
   - Create `common/database.py` with DynamoDBClient class
   - Create `common/exceptions.py` with domain exception classes
   - Create `common/dependencies.py` for FastAPI dependency injection
   - _Requirements: 5.1, 5.2, 5.3_
 
-- [ ] 3. Refactor Events domain
+- [-] 3. Refactor Events domain
   - Move event models from `models.py` to `domains/events/models.py`
   - Create `domains/events/repository.py` with EventRepository class
   - Create `domains/events/service.py` with EventService class
