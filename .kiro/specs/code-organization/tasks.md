@@ -34,14 +34,14 @@
   - Create `domains/registrations/router.py` with registration API endpoints
   - _Requirements: 1.1, 2.1, 3.1, 3.2_
 
-- [-] 6. Update main.py
+- [x] 6. Update main.py
   - Remove all route definitions from main.py
   - Import and register domain routers
   - Keep only FastAPI app initialization and middleware configuration
   - Set up dependency injection
   - _Requirements: 1.4, 4.1, 7.4_
 
-- [ ] 7. Update imports and dependencies
+- [x] 7. Update imports and dependencies
   - Update all imports to use new module structure
   - Ensure no circular dependencies exist
   - Verify dependency flow (API → Service → Repository)
