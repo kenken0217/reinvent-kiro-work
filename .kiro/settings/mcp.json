@@ -1,59 +1,75 @@
 {
   "mcpServers": {
-    "aws-kb-retrieval": {
+    "aws-knowledge-mcp-server": {
+      "url": "https://knowledge-mcp.global.api.aws",
+      "type": "http",
+      "disabled": false,
+      "autoApprove": [
+        "aws___read_documentation",
+        "aws___search_documentation",
+        "aws___search_documentation",
+        "aws___search_documentation"
+      ]
+    },
+    "awslabs.frontend-mcp-server": {
       "command": "uvx",
-      "args": ["mcp-server-aws-kb-retrieval"],
+      "args": [
+        "awslabs.frontend-mcp-server@latest"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "GetReactDocsByTopic"
+      ]
+    },
+    "awslabs.cdk-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.cdk-mcp-server@latest"
+      ],
       "env": {
         "FASTMCP_LOG_LEVEL": "ERROR"
       },
       "disabled": false,
       "autoApprove": []
     },
-    "aws-frontend": {
-      "command": "uvx",
-      "args": ["mcp-server-aws-frontend"],
+    "web-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@brave/brave-search-mcp-server",
+        "--transport",
+        "stdio"
+      ],
       "env": {
-        "FASTMCP_LOG_LEVEL": "ERROR"
+        "BRAVE_API_KEY": "YOUR_API_KEY"
       },
       "disabled": false,
-      "autoApprove": []
-    },
-    "aws-cdk": {
-      "command": "uvx",
-      "args": ["mcp-server-aws-cdk"],
-      "env": {
-        "FASTMCP_LOG_LEVEL": "ERROR"
-      },
-      "disabled": false,
-      "autoApprove": []
-    },
-    "brave-search": {
-      "command": "uvx",
-      "args": ["mcp-server-brave-search"],
-      "env": {
-        "BRAVE_API_KEY": "YOUR_BRAVE_API_KEY_HERE",
-        "FASTMCP_LOG_LEVEL": "ERROR"
-      },
-      "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "brave_web_search"
+      ]
     },
     "fetch": {
       "command": "uvx",
-      "args": ["mcp-server-fetch"],
-      "env": {
-        "FASTMCP_LOG_LEVEL": "ERROR"
-      },
+      "args": [
+        "mcp-server-fetch"
+      ],
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "fetch"
+      ]
     },
-    "context7": {
-      "command": "uvx",
-      "args": ["mcp-server-context7"],
-      "env": {
-        "FASTMCP_LOG_LEVEL": "ERROR"
-      },
+    "Context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {},
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "resolve-library-id",
+        "get-library-docs"
+      ]
     }
   }
 }
