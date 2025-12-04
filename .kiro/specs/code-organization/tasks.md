@@ -54,7 +54,7 @@
   - Ensure all functionality works as before
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [-] 9. Clean up old files
+- [x] 9. Clean up old files
   - Remove old `services.py` file
   - Remove old `database.py` file
   - Remove old `models.py` file
